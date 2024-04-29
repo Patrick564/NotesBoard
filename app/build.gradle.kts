@@ -67,5 +67,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.compose.material3:material3:1.2.1")
+    // Material 3
+    implementation(libs.material3)
+
+    // Navigation Compose
+    implementation(libs.navigation)
 }

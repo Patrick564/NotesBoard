@@ -17,22 +17,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.patrickdev.notesboard.ui.navigation.AppScreens
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
-@Preview
 @Composable
-fun NoteListItem() {
+fun NoteListItem(navController: NavController, scope: CoroutineScope) {
     Card(
-        onClick = { /*TODO*/ },
+        onClick = { scope.launch { navController.navigate(route = AppScreens.NoteScreen.route) } },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
-        modifier = Modifier.fillMaxWidth().wrapContentHeight()
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(5.dp, 5.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp, 5.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -52,7 +58,9 @@ fun NoteListItem() {
         }
 
         Text(
-            modifier = Modifier.fillMaxWidth().padding(5.dp, 5.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp, 5.dp),
             text = "Example text",
             textAlign = TextAlign.Center,
             fontSize = 12.sp
