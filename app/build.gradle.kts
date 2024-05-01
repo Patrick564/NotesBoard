@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -72,4 +74,12 @@ dependencies {
 
     // Navigation Compose
     implementation(libs.navigation)
+
+    // Room
+    implementation(libs.room)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
+    // Livedata
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 }

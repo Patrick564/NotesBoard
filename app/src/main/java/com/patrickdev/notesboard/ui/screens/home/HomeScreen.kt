@@ -21,36 +21,48 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.patrickdev.notesboard.ui.components.HomeTopAppBar
 import com.patrickdev.notesboard.ui.components.NoteListItem
+import com.patrickdev.notesboard.ui.viewmodel.INoteViewModel
+import com.patrickdev.notesboard.ui.viewmodel.NoteViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, homeViewModel: INoteViewModel = viewModel()) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
-        ModalDrawerSheet {
-            Text(text = "Title", modifier = Modifier.padding(16.dp))
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                Text(text = "Title", modifier = Modifier.padding(16.dp))
 
-            HorizontalDivider()
+                HorizontalDivider()
 
-            NavigationDrawerItem(
-                label = { Text(text = "Item 1") },
-                selected = false,
-                onClick = { /*TODO*/ }
-            )
-        }
-    }) {
-        ScaffoldHome(drawerState, scope, navController)
+                NavigationDrawerItem(
+                    label = { Text(text = "Item 1") },
+                    selected = false,
+                    onClick = { /*TODO*/ }
+                )
+            }
+        }) {
+        ScaffoldHome(drawerState, scope, navController, homeViewModel)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScaffoldHome(drawerState: DrawerState, scope: CoroutineScope, navController: NavController) {
+fun ScaffoldHome(
+    drawerState: DrawerState,
+    scope: CoroutineScope,
+    navController: NavController,
+    viewModel: INoteViewModel
+) {
+    val i = viewModel.allNotes.value
+
     val contentCards = listOf(
         "aaa", "fffff", "fffff", "fffff", "fffff", "fffff", "fffff", "fffff", "fffff", "fffff",
         "fffff"
