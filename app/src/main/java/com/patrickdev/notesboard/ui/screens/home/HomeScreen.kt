@@ -18,19 +18,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.patrickdev.notesboard.ui.AppViewModelProvider
+import com.patrickdev.notesboard.ui.components.AddButton
 import com.patrickdev.notesboard.ui.components.HomeTopAppBar
 import com.patrickdev.notesboard.ui.components.NoteListItem
-import com.patrickdev.notesboard.ui.viewmodel.INoteViewModel
-import com.patrickdev.notesboard.ui.viewmodel.NoteViewModel
+import com.patrickdev.notesboard.ui.navigation.AppScreens
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun HomeScreen(navController: NavController, homeViewModel: INoteViewModel = viewModel()) {
+fun HomeScreen(
+    navController: NavController,
+    homeViewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -48,7 +54,8 @@ fun HomeScreen(navController: NavController, homeViewModel: INoteViewModel = vie
                     onClick = { /*TODO*/ }
                 )
             }
-        }) {
+        }
+    ) {
         ScaffoldHome(drawerState, scope, navController, homeViewModel)
     }
 }
@@ -59,22 +66,18 @@ fun ScaffoldHome(
     drawerState: DrawerState,
     scope: CoroutineScope,
     navController: NavController,
-    viewModel: INoteViewModel
+    viewModel: HomeViewModel
 ) {
-    val i = viewModel.allNotes.value
-
-    val contentCards = listOf(
-        "aaa", "fffff", "fffff", "fffff", "fffff", "fffff", "fffff", "fffff", "fffff", "fffff",
-        "fffff"
-    )
-
+    val notes by viewModel.allNotes.observeAsState(emptyList())
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             HomeTopAppBar(drawerState, scope, scrollBehavior)
-        }, content = { innerPadding ->
+        },
+        floatingActionButton = { AddButton { navController.navigate(AppScreens.NoteScreen.route) } },
+        content = { innerPadding ->
             LazyColumn(
                 contentPadding = innerPadding,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -82,8 +85,8 @@ fun ScaffoldHome(
                     .padding(top = 12.dp)
                     .padding(horizontal = 16.dp)
             ) {
-                items(contentCards) {
-                    NoteListItem(navController, scope)
+                items(notes) {
+                    NoteListItem(navController, scope, it.content)
                 }
             }
         }

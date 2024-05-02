@@ -81,5 +81,8 @@ dependencies {
     ksp(libs.room.compiler)
 
     // Livedata
+    implementation(libs.runtime.livedata)
     implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }

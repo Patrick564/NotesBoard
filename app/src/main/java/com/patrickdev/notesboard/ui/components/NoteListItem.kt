@@ -25,7 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun NoteListItem(navController: NavController, scope: CoroutineScope) {
+fun NoteListItem(navController: NavController, scope: CoroutineScope, content: String) {
     Card(
         onClick = { scope.launch { navController.navigate(route = AppScreens.NoteScreen.route) } },
         colors = CardDefaults.cardColors(
@@ -61,7 +61,7 @@ fun NoteListItem(navController: NavController, scope: CoroutineScope) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp, 5.dp),
-            text = "Example text",
+            text = content,
             textAlign = TextAlign.Center,
             fontSize = 12.sp
         )
