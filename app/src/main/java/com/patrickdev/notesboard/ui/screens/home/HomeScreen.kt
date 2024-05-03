@@ -22,15 +22,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.patrickdev.notesboard.ui.AppViewModelProvider
 import com.patrickdev.notesboard.ui.components.AddButton
 import com.patrickdev.notesboard.ui.components.HomeTopAppBar
 import com.patrickdev.notesboard.ui.components.NoteListItem
 import com.patrickdev.notesboard.ui.navigation.AppScreens
 import kotlinx.coroutines.CoroutineScope
+
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewHomeScreen() {
+    val previewNavController = rememberNavController()
+
+    HomeScreen(previewNavController, PreviewHomeViewModel())
+}
 
 @Composable
 fun HomeScreen(
@@ -56,13 +66,13 @@ fun HomeScreen(
             }
         }
     ) {
-        ScaffoldHome(drawerState, scope, navController, homeViewModel)
+        HomeScreenScaffold(drawerState, scope, navController, homeViewModel)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScaffoldHome(
+fun HomeScreenScaffold(
     drawerState: DrawerState,
     scope: CoroutineScope,
     navController: NavController,
@@ -85,8 +95,8 @@ fun ScaffoldHome(
                     .padding(top = 12.dp)
                     .padding(horizontal = 16.dp)
             ) {
-                items(notes) {
-                    NoteListItem(navController, scope, it.content)
+                items(notes) { note ->
+                    NoteListItem(navController, scope, note.content)
                 }
             }
         }

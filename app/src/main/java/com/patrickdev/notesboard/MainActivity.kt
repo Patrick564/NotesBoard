@@ -26,11 +26,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun PreviewDefault() {
-//    val navController = rememberNavController()
-//
-//    HomeScreen(navController, NoteViewModel(PreviewNoteRepository()))
-//}
